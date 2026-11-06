@@ -1,0 +1,489 @@
+/* TextDock compact theme for messages.google.com
+ *
+ * Scoped to html.tdk-compact so the menu toggle switches it off. Selectors use the app's
+ * Angular element names and data-e2e-* test hooks, which change far less often than its
+ * generated class names. Sizes are !important because the app's encapsulated component
+ * styles otherwise win on specificity.
+ *
+ * Tweak the variables below from custom.css (menu > Edit custom CSS).
+ */
+
+html.tdk-compact {
+  --tdk-list-avatar: 34px;  /* conversation list */
+  --tdk-msg-avatar: 28px;   /* next to incoming messages */
+  --tdk-row-pad: 7px;       /* conversation list row, top and bottom */
+  --tdk-header-h: 46px;     /* conversation header */
+  --tdk-icon-btn: 34px;     /* icon buttons in headers and compose */
+  --tdk-chip-bg: #ffffff;
+  --tdk-divider: rgba(0, 0, 0, 0.08);
+}
+html.tdk-compact body.dark-theme {
+  --tdk-chip-bg: #3c4043;
+  --tdk-divider: rgba(255, 255, 255, 0.08);
+}
+
+/* ---- scrollbars ------------------------------------------------------------------- */
+
+html.tdk-compact ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+html.tdk-compact ::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.35);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background-clip: content-box;
+}
+html.tdk-compact ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(128, 128, 128, 0.55);
+}
+html.tdk-compact ::-webkit-scrollbar-track,
+html.tdk-compact ::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ---- top bar (logo + account) ---------------------------------------------------------
+ * inject.js adds tdk-hide-brand only after it finds the menu button, because the window's
+ * title bar takes over opening that menu. */
+
+html.tdk-compact.tdk-hide-brand mw-branded-header {
+  display: none !important;
+}
+html.tdk-compact.tdk-hide-brand div.branded-header {
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+/* QR-paired sessions have no top bar; the logo and menu sit above the list instead. */
+html.tdk-compact mw-main-nav .new-chat-header {
+  height: 48px !important;
+  margin: 0 6px 0 12px !important;
+}
+
+/* Promos only. Status banners (offline, battery, "trying to reach your phone") stay. */
+html.tdk-compact mw-bg-notifications-banner,
+html.tdk-compact mw-duo-notice-banner,
+html.tdk-compact mw-spam-intro-banner {
+  display: none !important;
+}
+
+/* ---- shared icon buttons -------------------------------------------------------------- */
+
+html.tdk-compact mws-header .mat-mdc-icon-button,
+html.tdk-compact mws-message-compose .mat-mdc-icon-button {
+  width: var(--tdk-icon-btn) !important;
+  height: var(--tdk-icon-btn) !important;
+  padding: calc((var(--tdk-icon-btn) - 20px) / 2) !important;
+}
+html.tdk-compact mws-header .mat-mdc-icon-button .mat-mdc-button-touch-target,
+html.tdk-compact mws-message-compose .mat-mdc-icon-button .mat-mdc-button-touch-target {
+  width: var(--tdk-icon-btn) !important;
+  height: var(--tdk-icon-btn) !important;
+}
+html.tdk-compact mws-header .mat-mdc-icon-button mws-icon,
+html.tdk-compact mws-message-compose .mat-mdc-icon-button mws-icon {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 20px !important;
+  line-height: 20px !important;
+}
+html.tdk-compact mws-header .mat-mdc-icon-button mws-icon svg,
+html.tdk-compact mws-message-compose .mat-mdc-icon-button mws-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+/* ---- conversation list ------------------------------------------------------------------ */
+
+html.tdk-compact mw-fab-link.start-chat {
+  margin: 8px 10px 6px 10px !important;
+}
+html.tdk-compact mw-fab-link a.fab {
+  height: 36px !important;
+  min-height: 0 !important;
+  padding: 0 14px 0 10px !important;
+  border-radius: 18px !important;
+  box-shadow: none !important;
+}
+html.tdk-compact mw-fab-link .fab-icon {
+  width: 20px !important;
+  height: 20px !important;
+}
+html.tdk-compact mw-fab-link .fab-label {
+  margin-left: 6px !important;
+  font-size: 14px !important;
+}
+
+html.tdk-compact mws-conversation-list-item a.list-item {
+  height: auto !important;
+  min-height: 0 !important;
+  padding: var(--tdk-row-pad) 10px var(--tdk-row-pad) 12px !important;
+}
+/* Avatars are canvases with an inline 40px size, hence !important on the canvas too. */
+html.tdk-compact a.list-item {
+  --avatar-size: var(--tdk-list-avatar);
+}
+html.tdk-compact a.list-item mws-avatar,
+html.tdk-compact a.list-item mws-avatar canvas,
+html.tdk-compact a.list-item mws-avatar img,
+html.tdk-compact a.list-item mws-group-avatar,
+html.tdk-compact a.list-item mws-group-avatar canvas {
+  width: var(--tdk-list-avatar) !important;
+  height: var(--tdk-list-avatar) !important;
+  line-height: var(--tdk-list-avatar) !important;
+}
+html.tdk-compact a.list-item .text-content {
+  min-width: 0;
+  padding: 0 10px !important;
+}
+html.tdk-compact a.list-item h2.name {
+  font-size: 14px !important;
+  line-height: 18px !important;
+}
+html.tdk-compact a.list-item .snippet-text {
+  font-size: 13px !important;
+  line-height: 17px !important;
+}
+html.tdk-compact a.list-item .list-item-info,
+html.tdk-compact a.list-item mws-relative-timestamp {
+  font-size: 11px !important;
+  line-height: 14px !important;
+}
+
+/* ---- conversation header ---------------------------------------------------------------- */
+
+html.tdk-compact mws-header.header {
+  height: var(--tdk-header-h) !important;
+  padding: 0 4px 0 8px !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid var(--tdk-divider);
+}
+html.tdk-compact mws-header .back-button {
+  margin: 0 4px 0 -2px !important;
+}
+html.tdk-compact mws-header .title h2 {
+  font-size: 15px !important;
+  line-height: 20px !important;
+}
+html.tdk-compact mws-header .conv-header-button {
+  margin: 0 !important;
+}
+
+/* ---- messages ----------------------------------------------------------------------------- */
+
+/* The app pads the list by a header height it measures once (68px) plus 24px. */
+html.tdk-compact mws-messages-list .bottom-anchored-content {
+  padding-top: calc(var(--tdk-header-h) + 8px) !important;
+}
+/* Its bottom padding is the compose box height + 50px, set inline by script. Pull the content
+ * down so the newest message sits just above the slimmer compose bar. */
+html.tdk-compact div.content[data-e2e-messages-list-content] {
+  margin-bottom: -34px !important;
+}
+
+html.tdk-compact mws-message-wrapper {
+  margin: 0 4px 0 10px !important;
+}
+/* Leave some air beside bubbles; the hover actions float in it. */
+html.tdk-compact .msg-part-with-menu {
+  max-width: 88% !important;
+}
+html.tdk-compact mws-message-wrapper .msg-row.first-msg-in-bundle {
+  margin-top: 8px !important;
+}
+html.tdk-compact .msg-row mws-avatar,
+html.tdk-compact .msg-row mws-avatar canvas,
+html.tdk-compact .msg-row mws-avatar img,
+html.tdk-compact .msg-row span.empty-avatar-space {
+  width: var(--tdk-msg-avatar) !important;
+  height: var(--tdk-msg-avatar) !important;
+  line-height: var(--tdk-msg-avatar) !important;
+}
+html.tdk-compact .text-msg-content {
+  padding: 4px 0 !important;
+}
+html.tdk-compact .text-msg.msg-content {
+  padding: 1px 10px !important;
+}
+html.tdk-compact mws-message-status {
+  font-size: 11px !important;
+}
+
+/* Hover actions (react / reply / more) reserve a 116px column beside every bubble.
+ * Float them over the row instead so bubbles can use the full width. */
+html.tdk-compact .msg-parts-container {
+  position: relative;
+}
+html.tdk-compact mws-message-actions.msg-action-menu-reserved-width {
+  position: absolute !important;
+  z-index: 3;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: auto !important;
+  height: auto !important;
+  gap: 0 !important;
+  padding: 1px 3px;
+  border-radius: 16px;
+  background: var(--tdk-chip-bg);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+html.tdk-compact mws-message-actions.msg-action-menu-reserved-width.outgoing {
+  right: auto;
+  left: 0;
+}
+html.tdk-compact mws-message-actions .mat-mdc-icon-button {
+  width: 30px !important;
+  height: 30px !important;
+  padding: 5px !important;
+}
+html.tdk-compact mws-message-actions .mat-mdc-button-touch-target {
+  width: 30px !important;
+  height: 30px !important;
+}
+html.tdk-compact mws-message-actions mws-reply-to-message-button-wrapper,
+html.tdk-compact mws-message-actions mws-reply-to-message-button,
+html.tdk-compact mws-message-actions mw-message-reactions-menu {
+  width: auto !important;
+  height: auto !important;
+}
+html.tdk-compact mws-message-actions mws-icon,
+html.tdk-compact mws-message-actions mws-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 20px !important;
+  line-height: 20px !important;
+}
+
+/* ---- compose bar ---------------------------------------------------------------------------
+ * Narrow windows stack emoji/sticker/GIF above the text box (130px tall). Put everything on
+ * one row: [pickers][text][send]. */
+
+html.tdk-compact mws-message-compose .compose-container {
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 8px !important;
+  padding: 0 0 8px !important;
+}
+html.tdk-compact mws-message-compose .input-box {
+  border-radius: 20px !important;
+  box-shadow: none !important;
+  outline: 1px solid var(--tdk-divider);
+}
+html.tdk-compact mws-message-compose .input-area {
+  display: flex !important;
+  align-items: flex-end;
+  padding: 1px 2px 1px 4px !important;
+}
+html.tdk-compact mws-message-compose mws-message-compose-picker-buttons {
+  flex: 0 0 auto;
+  left: 0 !important;
+  right: 0 !important;
+  width: auto !important;
+  height: auto !important;
+}
+html.tdk-compact mws-message-compose .input-row {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: auto !important;
+  align-items: flex-end;
+}
+html.tdk-compact mws-message-compose .picker-button {
+  width: 32px !important;
+  height: 32px !important;
+  padding: 6px !important;
+}
+html.tdk-compact mws-autosize-textarea {
+  height: auto !important;
+}
+html.tdk-compact mws-autosize-textarea .input {
+  min-height: 0 !important;
+  padding: 7px 0 !important;
+}
+html.tdk-compact mws-message-send-button,
+html.tdk-compact mws-message-send-button .container,
+html.tdk-compact mws-message-send-button button {
+  width: var(--tdk-icon-btn) !important;
+  min-width: 0 !important;
+  height: var(--tdk-icon-btn) !important;
+  min-height: 0 !important;
+}
+html.tdk-compact mws-message-send-button button {
+  padding: 7px !important;
+}
+
+/* ==== selection mode (inject.js) ==========================================================
+ * Not scoped to tdk-compact: selecting and deleting works with either layout. */
+
+html {
+  --tdk-bar-fg: #1f1f1f;
+  --tdk-bar-hover: rgba(0, 0, 0, 0.07);
+  --tdk-danger: #b3261e;
+  --tdk-accent: #0f766e;
+  --tdk-sel-bg: rgba(15, 118, 110, 0.12);
+}
+body.dark-theme {
+  --tdk-bar-fg: #e3e3e3;
+  --tdk-bar-hover: rgba(255, 255, 255, 0.09);
+  --tdk-danger: #f2b8b5;
+  --tdk-accent: #5eead4;
+  --tdk-sel-bg: rgba(94, 234, 212, 0.16);
+}
+
+/* The bar shares a row with "Start chat"; everything else in the header keeps its own row. */
+mw-main-nav .main-nav-header.tdk-has-bar {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: center;
+}
+mw-main-nav .main-nav-header.tdk-has-bar > * {
+  flex: 1 0 100%;
+}
+mw-main-nav .main-nav-header.tdk-has-bar > mw-fab-link.start-chat {
+  flex: 0 0 auto;
+}
+mw-main-nav .main-nav-header.tdk-has-bar > .tdk-bar {
+  flex: 1 1 0;
+  min-width: 0;
+}
+html.tdk-selecting mw-main-nav mw-fab-link.start-chat {
+  display: none !important;
+}
+
+.tdk-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+  min-height: 36px;
+  padding: 0 6px;
+  color: var(--tdk-bar-fg);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+}
+html.tdk-selecting .tdk-bar {
+  justify-content: flex-start;
+  margin: 6px 0;
+}
+.tdk-bar .tdk-status {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.tdk-bar .tdk-btn {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 4px;
+  height: 30px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 15px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.tdk-bar .tdk-btn:hover {
+  background: var(--tdk-bar-hover);
+}
+.tdk-bar .tdk-btn:disabled {
+  background: transparent;
+  opacity: 0.45;
+  cursor: default;
+}
+.tdk-bar .tdk-btn svg {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+.tdk-bar .tdk-icon-only {
+  justify-content: center;
+  width: 32px;
+  padding: 0;
+}
+.tdk-bar .tdk-danger {
+  color: var(--tdk-danger);
+}
+
+/* Rows: ring on every avatar while selecting, filled check on the selected ones. */
+html.tdk-selecting mws-conversation-list-item a.list-item {
+  cursor: pointer;
+}
+html.tdk-selecting mws-conversation-list-item-menu {
+  visibility: hidden !important;
+}
+html.tdk-selecting mws-conversation-list-item .avatar-container {
+  position: relative;
+}
+html.tdk-selecting mws-conversation-list-item .avatar-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.18);
+  box-shadow: inset 0 0 0 2px var(--tdk-accent);
+}
+mws-conversation-list-item.tdk-sel a.list-item {
+  background-color: var(--tdk-sel-bg) !important;
+}
+html.tdk-selecting mws-conversation-list-item.tdk-sel .avatar-container::after {
+  background: var(--tdk-accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center / 62% no-repeat;
+  box-shadow: none;
+}
+html.tdk-selecting body.dark-theme mws-conversation-list-item.tdk-sel .avatar-container::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23042f2e' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E");
+}
+
+/* ==== important conversations (inject.js) ================================================ */
+
+/* Star in the conversation header. */
+.tdk-star {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 2px 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+html.tdk-compact .tdk-star {
+  width: var(--tdk-icon-btn);
+  height: var(--tdk-icon-btn);
+}
+.tdk-star:hover {
+  background: var(--tdk-bar-hover);
+}
+.tdk-star svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+.tdk-star[aria-pressed="true"] {
+  color: #f5a623;
+}
+
+/* Starred rows get a small star under the time; rows waiting on your reply get an orange edge. */
+mws-conversation-list-item.tdk-important .list-item-info::after {
+  content: "\2605";
+  margin-top: 2px;
+  color: #f5a623;
+  font-size: 12px;
+  line-height: 14px;
+}
+mws-conversation-list-item.tdk-attention a.list-item {
+  box-shadow: inset 3px 0 0 #fb8c00;
+}

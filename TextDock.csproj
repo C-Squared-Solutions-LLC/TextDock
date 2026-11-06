@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>false</SelfContained>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <!-- WPF and WinForms both define Application, Button, Color, etc. Keep usings explicit. -->
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>TextDock</RootNamespace>
+    <AssemblyName>TextDock</AssemblyName>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyTitle>TextDock</AssemblyTitle>
+    <Product>TextDock</Product>
+    <Description>Messages for web in a compact, always-on-top desktop window</Description>
+    <Authors>Casey Christensen</Authors>
+    <Copyright>Copyright (c) 2026 Casey Christensen</Copyright>
+    <!-- Release builds get the real number from the git tag (-p:Version=...). -->
+    <Version>1.0.0</Version>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <DebugType>embedded</DebugType>
+    <PublishReferencesDocumentationFiles>false</PublishReferencesDocumentationFiles>
+    <AllowedReferenceRelatedFileExtensions>.pdb</AllowedReferenceRelatedFileExtensions>
+    <!-- WPF reads DPI awareness from app.manifest; the WinForms analyzer's advice doesn't apply here. -->
+    <NoWarn>$(NoWarn);WFO0003</NoWarn>
+  </PropertyGroup>
+
+  <!-- dotnet publish always produces one exe. A self-contained publish also carries the
+       .NET runtime, so it runs on a PC that has never seen .NET. -->
+  <PropertyGroup>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile Condition="'$(SelfContained)' == 'true'">true</EnableCompressionInSingleFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4314.35" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\app.ico" />
+    <EmbeddedResource Include="Assets\compact.css" LogicalName="TextDock.compact.css" />
+    <EmbeddedResource Include="Assets\inject.js" LogicalName="TextDock.inject.js" />
+  </ItemGroup>
+
+</Project>

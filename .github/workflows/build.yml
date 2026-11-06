@@ -1,0 +1,90 @@
+# Every push and PR builds the standalone exe. A v* tag also publishes it as a GitHub release:
+#   git tag v1.2.0 && git push origin v1.2.0
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Publish standalone exe
+        shell: pwsh
+        run: |
+          $publishArgs = @('publish', 'TextDock.csproj', '-c', 'Release', '--self-contained', '-o', 'publish')
+          if ($env:GITHUB_REF_TYPE -eq 'tag') {
+            $publishArgs += "-p:Version=$($env:GITHUB_REF_NAME -replace '^v', '')"
+          }
+          dotnet @publishArgs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $exe = Get-Item publish/TextDock.exe
+          "{0}: {1:N1} MB, version {2}" -f $exe.Name, ($exe.Length / 1MB), $exe.VersionInfo.ProductVersion
+
+      # The exe keeps the same name in every release, so the README's latest/download link works
+      # and replacing the file on upgrade keeps "Start with Windows" pointing at it.
+      - name: Collect release files
+        if: github.ref_type == 'tag'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory release | Out-Null
+          Copy-Item publish/TextDock.exe release/TextDock.exe
+          $hash = (Get-FileHash release/TextDock.exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          [IO.File]::WriteAllText("$PWD/release/SHA256SUMS.txt", "$hash  TextDock.exe`n")
+          Get-Content release/SHA256SUMS.txt
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ github.ref_type == 'tag' && 'release' || 'TextDock-win-x64' }}
+          path: ${{ github.ref_type == 'tag' && 'release/' || 'publish/TextDock.exe' }}
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    if: github.ref_type == 'tag'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: release
+          path: release
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          version="${TAG#v}"
+          cat > notes.md <<EOF
+          **Download [TextDock.exe](https://github.com/$GITHUB_REPOSITORY/releases/download/$TAG/TextDock.exe)** and run it. It's one standalone file for Windows 10 and 11 (x64) with .NET built in, so there's no installer and nothing else to set up.
+
+          - First launch shows the pairing QR code. Scan it from the Messages app on your phone (Device pairing).
+          - The exe isn't code-signed, so SmartScreen may say "Windows protected your PC" the first time. Click **More info**, then **Run anyway**. SHA256SUMS.txt has the checksum.
+          - Upgrading: quit TextDock from the tray menu and replace the exe. Settings and pairing live in your user profile, not next to the exe.
+
+          EOF
+          prerelease=()
+          case "$version" in *-*) prerelease=(--prerelease) ;; esac
+          gh release create "$TAG" release/* \
+            --repo "$GITHUB_REPOSITORY" \
+            --verify-tag \
+            --title "TextDock $version" \
+            --notes-file notes.md \
+            --generate-notes \
+            "${prerelease[@]}"
