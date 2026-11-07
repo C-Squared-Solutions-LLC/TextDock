@@ -6,7 +6,7 @@ TextDock is a desktop shell for Messages for web, the site an Android phone pair
 
 ## Download
 
-**[Download TextDock.exe](https://github.com/Neelerak/TextDock/releases/latest/download/TextDock.exe)** (or pick a version on the [releases page](https://github.com/Neelerak/TextDock/releases)) and run it. One file, .NET included, no installer.
+**[Download TextDock.exe](https://github.com/C-Squared-Solutions-LLC/TextDock/releases/latest/download/TextDock.exe)** (or pick a version on the [releases page](https://github.com/C-Squared-Solutions-LLC/TextDock/releases)) and run it. One file, .NET included, no installer.
 
 - Windows 10 or 11, x64.
 - Needs the WebView2 runtime. Windows 11 ships with it, and Edge updates have put it on most Windows 10 PCs. If yours lacks it, TextDock says so and tells you where to get it.
@@ -137,4 +137,4 @@ git push origin v1.1.0
 
 MIT. See [LICENSE](LICENSE), and [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for what the release exe bundles.
 
-TextDock is an independent project, not affiliated with or endorsed by Google. Google Messages is a trademark of Google LLC.
+TextDock is made by C Squared Solutions LLC. It is an independent project, not affiliated with or endorsed by Google. Google Messages is a trademark of Google LLC.
